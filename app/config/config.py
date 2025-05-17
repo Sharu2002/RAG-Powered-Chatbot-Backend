@@ -18,3 +18,9 @@ class Config:
     REDIS_DB = os.getenv("REDIS_DB")
     SESSION_EXPIRY = os.getenv("SESSION_EXPIRY")
 
+
+    MODEL_NAME = os.getenv("MODEL_NAME")
+
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+    GEMINI_API_URL = os.getenv("GEMINI_API_URL")
+

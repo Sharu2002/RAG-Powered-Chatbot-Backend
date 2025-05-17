@@ -18,3 +18,23 @@ def create_session():
     """ Generate a new session ID """
     session_id = str(uuid4())
     return session_id
+
+def store_message(session_id, query, response):
+    """ Store a query-response pair in Redis """
+    message = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "query": query,
+        "response": response
+    }
+
+    # Store in a Redis list
+    redis_client.rpush(session_id, json.dumps(message))
+
+    # Set expiry for session
+    redis_client.expire(session_id, SESSION_EXPIRY)
+
+def get_chat_history(session_id):
+    """ Retrieve chat history for a session """
+    messages = redis_client.lrange(session_id, 0, -1)
+    return [json.loads(message) for message in messages]
+
