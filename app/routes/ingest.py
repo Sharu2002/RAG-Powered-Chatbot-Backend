@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
+from services.embeddingService import extract_and_store_embeddings
 from models.urlModel import UrlModel
 
-from services.web_scrapping_service import extract_and_store_embeddings
 
 
 router = APIRouter()
