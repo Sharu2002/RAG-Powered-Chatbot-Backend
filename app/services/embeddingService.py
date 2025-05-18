@@ -19,22 +19,24 @@ def generate_embeddings(documents):
     embeddings_list = embeddings_model.embed_documents([doc.page_content for doc in documents])
     return embeddings_list
 
-def extract_and_store_embeddings(urls):
+def extract_and_store_embeddings(url):
     """ Extract content, split into chunks, generate embeddings, and store in pgvector """
-    # Collect all split documents
     documents = []
 
-    for url in urls:
-        print(f"Processing URL: {url}")
-        content = extract_content(url)
+    print(f"Processing URL: {url}")
+    content = extract_content(url)
 
-        if content:
-            # Split content into manageable chunks
-            split_docs = split_content(content, url)
-            print(f"Extracted and split {len(split_docs)} chunks for {url}")
-            documents.extend(split_docs)
-        else:
-            print(f"No content found for {url}")
+    if not content:
+        print(f"No content found for {url}")
+        return None
+
+    # Split content into chunks
+    split_docs = split_content(content, url)
+    if not split_docs:
+        print(f"No content extracted for {url}")
+        return None
+
+    documents.extend(split_docs)
 
     # Generate embeddings
     embeddings = generate_embeddings(documents)
@@ -44,3 +46,5 @@ def extract_and_store_embeddings(urls):
     if conn:
         store_embeddings_in_db(conn, documents, embeddings)
         conn.close()
+
+    return "Content ingested successfully"

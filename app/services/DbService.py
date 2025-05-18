@@ -1,3 +1,6 @@
+from services.connectDbService import connect_db
+
+
 def store_embeddings_in_db(conn, documents, embeddings):
     """ Store embeddings in pgvector table """
     try:
@@ -22,3 +25,16 @@ def store_embeddings_in_db(conn, documents, embeddings):
     except Exception as e:
         print(f"Error storing embeddings: {e}")
         conn.rollback()
+
+
+def get_ingested_urls():
+    """ Retrieve all ingested URLs from the database """
+    try:
+        conn = connect_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT DISTINCT source_url FROM embeddings;")        
+        urls = cursor.fetchall()
+        return [url[0] for url in urls]
+    except Exception as e:
+        print(f"Error retrieving URLs: {e}")
+        return []
