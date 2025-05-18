@@ -22,7 +22,7 @@ async def chat(query: str):
             print(f"Time: {msg['timestamp']}\nQuery: {msg['query']}\nResponse: {msg['response']}\n")
 
 
-        result = {"message": f"Chat response for query: {response}"}
+        result = {"message": f"{response}"}
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

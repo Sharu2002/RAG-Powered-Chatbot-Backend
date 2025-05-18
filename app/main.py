@@ -4,6 +4,7 @@ from services.redisService import create_session, redis_client
 from routes.ingest import router as ingest_router
 from routes.chat import router as chat_router
 from routes.chatHistory import router as chat_history_router
+from routes.session import router as session_router
 
 # Global session_id
 session_id = None
@@ -28,6 +29,7 @@ app = FastAPI(lifespan=lifespan, title="RAG Chatbot API", version="1.0.0")
 app.include_router(ingest_router, prefix="", tags=["Ingest"])
 app.include_router(chat_router, prefix="", tags=["Chat"])
 app.include_router(chat_history_router, prefix="", tags=["Chat History"])
+app.include_router(session_router, prefix="", tags=["Session"])
 
 if __name__ == "__main__":
     import uvicorn
